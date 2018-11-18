@@ -1,0 +1,108 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdk
+    defaultConfig {
+        applicationId "com.sbrosteanu.weatherapp"
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            buildConfigField 'String', 'URL', '"https://api.darksky.net/forecast/"'
+            buildConfigField 'String', 'API_KEY', '"d43eba498ce784cd97edddaa714c7661"'
+            buildConfigField 'String', 'GEOCODE_URL', '"https://nominatim.openstreetmap.org/search/"'
+        }
+        release {
+            buildConfigField 'String', 'URL', '"https://api.darksky.net/forecast/"'
+            buildConfigField 'String', 'API_KEY', '"d43eba498ce784cd97edddaa714c7661"'
+            buildConfigField 'String', 'GEOCODE_URL', '"https://nominatim.openstreetmap.org/search/"'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+kapt {
+    generateStubs = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //AndroidX
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'com.google.android.material:material:1.0.0'
+
+    //OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp_version"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
+
+    // Reactive
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.rxkotlin_version"
+    implementation "com.jakewharton.rxbinding2:rxbinding:$rootProject.rxbinding_version"
+
+    //Dagger
+    implementation "com.google.dagger:dagger:$rootProject.dagger2_version"
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger2_version"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger2_version"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger2_version"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger2_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2_version"
+
+    //Database
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.room_database_version"
+    kapt "android.arch.persistence.room:compiler:$rootProject.room_database_version"
+    implementation "android.arch.lifecycle:extensions:$rootProject.android_arch_version"
+    implementation "android.arch.lifecycle:common-java8:$rootProject.android_arch_version"
+    implementation "android.arch.lifecycle:reactivestreams:$rootProject.android_arch_version"
+
+    //DB debug
+    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDB_version"
+
+    //Logger
+    implementation "com.jakewharton.timber:timber:$rootProject.timber_version"
+
+    //Parceler
+    implementation "org.parceler:parceler-api:$rootProject.parceler_version"
+    kapt "org.parceler:parceler-api:$rootProject.parceler_version"
+
+    // dependencies for local unit tests
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    kaptTest "com.google.dagger:dagger-compiler:$rootProject.dagger2_version"
+
+    // UI Testing
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    androidTestImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.dagger2_version"
+
+}

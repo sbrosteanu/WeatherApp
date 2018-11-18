@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="city_prompt">City</string>
+    <string name="city_search">Search</string>
+    <string name="invalid_city_name">Please enter a city name</string>
+    <string name="no_internet_connection">No internet connection. Please connect to the internet.</string>
+    <string name="error_message">An error has occurred while retrieving data. Please try again.</string>
+
+    <string name="intentWeatherDetailsParcelerBundleName">WEATHER_DETAILS_BUNDLE</string>
+</resources>
