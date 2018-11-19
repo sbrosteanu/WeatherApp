@@ -16,7 +16,7 @@ data class WeatherDetailsDTO @ParcelConstructor constructor(val cityName: String
                                                             val cloudsPercentage: Double?,
                                                             val weeklyWeatherList: ArrayList<WeeklyWeatherDTO>?,
                                                             val hourlyWeatherList: ArrayList<HourlyWeatherDTO>?,
-                                                            val hourlyWeatherStringFormatedHoursList: ArrayList<String>?)
+                                                            val hourlyWeatherStringFormattedHoursList: ArrayList<String>?)
 
 @Parcel(Parcel.Serialization.BEAN)
 data class WeeklyWeatherDTO @ParcelConstructor constructor(val maxTemp: String,

@@ -1,5 +1,6 @@
 package com.sbrosteanu.weatherapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -18,6 +19,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import org.parceler.Parcels
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -67,7 +69,16 @@ class MainActivity : BaseActivity() {
                 .subscribe(
                         { weatherResponse: WeatherDetailsDTO? ->
                             toggleUIState(hasRequestEnded = true)
-                            showDetails(weatherResponse)
+
+                           if (weatherResponse != null) {
+
+                               val wrapped = Parcels.wrap(weatherResponse)
+
+                               val intent = Intent(this, DetailsActivity::class.java)
+                               intent.putExtra(getString(R.string.intentWeatherDetailsParcelerBundleName), wrapped)
+                               startActivity(intent)
+                           }
+
                             if (!(searchedCityNames.contains(searchedCityName)))
                                 viewModel.addCity(searchedCityName)
                         },

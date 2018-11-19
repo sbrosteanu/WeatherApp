@@ -29,7 +29,7 @@ ext {
     android_arch_version = '2.0.0-rc01'
     debugDB_version = '1.0.3'
     timber_version = '4.6.0'
-    parceler_version = '1.1.9'
+    parceler_version = '1.1.11'
 
     // Sdk and tools
     minSdk = 23

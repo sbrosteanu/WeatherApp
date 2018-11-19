@@ -39,7 +39,7 @@ object DTOTransformer{
                 cloudsPercentage = cloudCoverPercentage?.let { it * 100 },
                 weeklyWeatherList = weeklyWeatherList,
                 hourlyWeatherList = hourlyWeatherList,
-                hourlyWeatherStringFormatedHoursList = hourlyWeatherStringFormatedHoursList
+                hourlyWeatherStringFormattedHoursList = hourlyWeatherStringFormatedHoursList
         )
     }
 
