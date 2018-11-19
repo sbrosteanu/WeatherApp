@@ -2,6 +2,7 @@ package com.sbrosteanu.weatherapp.di.modules
 
 import com.sbrosteanu.weatherapp.Application
 import com.sbrosteanu.weatherapp.data.repositories.Repository
+import com.sbrosteanu.weatherapp.data.repositories.RepositoryImpl
 import com.sbrosteanu.weatherapp.ui.viewModels.factory.ViewModelFactory
 import dagger.Module
 import dagger.Provides

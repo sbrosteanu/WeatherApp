@@ -3,6 +3,7 @@ package com.sbrosteanu.weatherapp
 import com.sbrosteanu.weatherapp.data.repositories.Repository
 import com.sbrosteanu.weatherapp.data.source.local.LocalDataSource
 import com.sbrosteanu.weatherapp.data.source.local.dao.CityDao
+import com.sbrosteanu.weatherapp.data.source.local.dao.CityEntity
 import com.sbrosteanu.weatherapp.data.source.remote.RemoteDataSource
 import com.sbrosteanu.weatherapp.data.source.remote.remoteServices.GeocodingService
 import com.sbrosteanu.weatherapp.data.source.remote.remoteServices.WeatherService
@@ -10,6 +11,7 @@ import com.sbrosteanu.weatherapp.domain.dto.HourlyWeatherDTO
 import com.sbrosteanu.weatherapp.domain.dto.WeatherDetailsDTO
 import com.sbrosteanu.weatherapp.domain.dto.WeeklyWeatherDTO
 import com.sbrosteanu.weatherapp.ui.viewModels.WeatherViewModel
+import io.reactivex.Flowable
 import io.reactivex.Single
 import junit.framework.Assert.assertEquals
 import org.junit.Before
@@ -23,33 +25,22 @@ class ViewModelTest {
 
 
     @Mock
-    private lateinit var localDataSource: LocalDataSource
-
-    @Mock
-    private lateinit var remoteDataSource: RemoteDataSource
-
-    @Mock
-    private lateinit var weatherService: WeatherService
-
-    @Mock
-    private lateinit var searchCityDao: CityDao
-
-    @Mock
-    private lateinit var geocodingService: GeocodingService
-
+    private lateinit var repository: Repository
 
     @Captor
     private lateinit var stringCityNameArgumentCaptor: ArgumentCaptor<String>
 
     private lateinit var weatherViewModel: WeatherViewModel
 
-    private lateinit var repository: Repository
+
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        repository = Repository(remoteDataSource, localDataSource)
         weatherViewModel = WeatherViewModel(repository = repository)
+
+        weeklyWeatherDtoArray.add(weeklyWeatherDTO)
+        hourlyWeatherDtoArray.add(hourlyWeatherDTO)
 
     }
 
@@ -62,7 +53,35 @@ class ViewModelTest {
 
         weatherViewModel.getWeather(cityName)
 
-        Mockito.verify<Repository>(repository).getWeather(stringCityNameArgumentCaptor.capture())
+        Mockito.verify<Repository>(repository).getWeather(capture(stringCityNameArgumentCaptor))
+
+        assertEquals(cityName, stringCityNameArgumentCaptor.value)
+    }
+
+    @Test
+    fun getCities_fetchFromRepository() {
+        val cityName = "London"
+
+        Mockito.`when`(repository.getCities()).thenReturn(Flowable.just(listOf(CityEntity(cityName = cityName))))
+
+        weatherViewModel.getCities()
+                .firstElement()
+                .test()
+                .assertNoErrors()
+                .assertValue{
+                    it.size == 1 && it.first().cityName.equals(cityName, true)
+                }
+
+        Mockito.verify<Repository>(repository).getCities()
+    }
+
+    @Test
+    fun addCity_toRepository() {
+        val cityName = "London"
+
+        weatherViewModel.addCity(cityName = cityName)
+
+        Mockito.verify<Repository>(repository).addCity(capture(stringCityNameArgumentCaptor))
 
         assertEquals(cityName, stringCityNameArgumentCaptor.value)
     }
